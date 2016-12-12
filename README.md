@@ -1,66 +1,193 @@
-# Assignment5-PokeGUI
+# Assignment 4 - Pokedex Binary Search Tree
 
-## Due Monday Dec 12, 9:45 am  (end of ICS 211 final period)
-----
-In this assignment we are going to try to pull together much of what you have worked on all semester into a nice pretty package. 
-
-The task is to build a Graphical User Interface (GUI) for your Pokemon species heirarchy that works somewhat like Pokemon Go without the GPS. 
-
-You are encouraged to get creative with this. Make your application look nice! Some extra credit is defined, but adding other functionality will get additional points. 
-
-*Some of you may know how to make better GUIs than others. If you have GUI experience and want to, go ahead and make something nicer than is described below. Just make sure it still performs the same tasks.*
-
+ * 100 points
+ * Due Wed 11/23
+ 
 ----
 
-The GUI should have two sections:
- * The top section will be for catching Pokemon.
- * The bottom section will be like your "backpack" and will display the list of captured Pokemon in various ways.
- * The whole thing should be built using Java JFrames and JPanels, plus components.
- 
-## Top Section - 50 points
-Here there should be:
-  * A TextField or TextArea big enough display one Pokemon's toString output.
-  * A button titled "Hunt"
-  * A button titled "Catch"
-  
-When the user clicks the "Hunt" button:
-  * The program should randomly select one species of Pokemon and create it. 
-  * The TextField should display "A Bulbasaur appeared!" (or whatever species was selected)
-  
-The user will then need to click the "Catch" button.
-  * This will be equivalent of throwing a Pokeball
-  * The program should then randomly decide whether or not the Pokemon actually gets caught.
-   * If the Pokemon gets caught, the text field should display something like "Caught: " + ```<Pokemon>.toString()```
-   * If not the TextField should display: "```<Pokemon>``` escaped"
-   
-### Extra Credit suggestion
- * Add a way to let the user give the caught Pokemon a name.
- 
-## Bottom Section - 50 points
-This part of the program will use data structures you have already implemented to store Pokemon as they are caught in the upper section. 
+Finally, we are going to make the Pokedex! 
 
-Here there should be:
- * A TextArea for displaying a list of Pokemon
- * A button titled "Pokedex"
- * A button titled "Backpack"
- * A Choice pop-up menu for the sorting order with the following choices:
-  * Number
-  * Recent
-  
-When the user clicks the "Pokedex" button, the TextArea should display the output of printPokeTree from Assignment 4. 
+In the Pokemon Go game, the Pokedex holds an entry for each species of Pokemon that you have 
+caught. This isn't your entire inventory of Pokemon, just a listing of each species you have seen and 
+how many seen and caught.
 
-When the user clicks the "Backpack" button, the TextArea should display a list of all Pokemon that have been caught, ordered by whatever Choice is selected.
- * The stack from Assignment 3 holds the Pokemons in the "Recent" order
- * The PriorityQueue from Assignment 3 holds them in "Number" order
+ * Species not yet seen or caught are not in the Pokedex.
+ * Species are ordered by Number.
  
-### Extra Credit Sorting - 50 points
-Add three more Choices to the pop-up menu for sorting order:
-  * Name
-  * HP
-  * CP
- * You will need to implement sorting for these orders.
-  * It is up to you how you accomplish this.
-   * You may make separate data structures that keep the entire list sorted all the time.
-   * Alternatively you could just do the sorts as needed.
-   * You may make your own sorting methods, or use the Java List sort method with a Comparator
-    * See this reference for how to use a Comparator: https://examples.javacodegeeks.com/core-java/util/comparator/java-comparator-example/
+You should submit the three new classes described below: 
+ * Pokedex.java, 
+ * PokeTree.java
+ * PokeNode.java. 
+ 
+If you create any other classes for this assignment (such as a node exception or tree exception), you must submit them as well. 
+
+Include any of the Pokemon class files from previous assignments that are needed to run your program in your GitHub repository
+for this assignment.
+
+## Program requirements and structure:
+
+This project will simulate the Pokemon Go Pokedex. A Binary Search Tree (BST) will function as the Pokedex database, a "PokeTree". 
+The BST will formed of nodes that contain Pokemon objects and a count of how many times the Pokemon has been caught. The BST will be 
+ordered by the Pokemon **number** datafield (NOT the compareTo method ordering!) 
+
+In order to do this you must put Pokemon objects into PokeNodes and add the PokeNodes to the PokeTree object.
+
+----
+**Use the example code in Laulima --> Resources --> Week 11 - Trees_Heaps as a template**
+* BinaryNode.java
+* BinarySearchTree.java
+* BinarySearchTreeDriver.java
+
+Except in this assignment, you're not going to make a generic BST, it should be tailored specifically to Pokemon objects.
+
+--- 
+Required classes:
+* Pokedex.java, which is your driver class
+* PokeTree.java, which will implement all the binary search tree functionality
+* PokeNode.java, (tree node) which will create nodes for your tree.
+
+---
+
+##Pokedex.java
+
+The driver program should have a menu loop with these functionalities:
+
+* Catch Pokemon
+  * Add new Pokemon to the BST
+  * Increase the count of number caught of a Pokemon already in the tree.
+  * Use your sub-menu from Assignment 2 to choose Pokemon
+  
+* Trade Pokemon
+  * Lower the quantity of a caught Pokemon in the BST.
+  * Make sure you don't trade Pokemon you don't have! Caught quantity cannot become negative.
+  * Remove Pokemon from the tree that are all traded away.
+  * Use your sub-menu from Assignment 2 to choose Pokemon
+  
+* Print out the Pokedex of Pokemon ordered by number (inorder traversal)  and how many of each have been caught.
+
+The class methods described below are there to give you an idea of what will be needed. 
+You are free to organize your project any way you want as long as you have AT LEAST these three required classes 
+and functionality given above.
+
+Do not forget that you need to validate everything, thus you will need to have exception classes. 
+These may be included in the class files like some of our example code has done, or in their own files.
+
+####Comments are very important
+Since you will have complete authority in regards to your code design, it is VERY important that you add explicit comments 
+to your code. This can add or take away points from your grade. 
+
+## Suggested Methods for your classes
+
+### PokeNode.java
+
+#### Node constructor
+`public PokeNode( Pokemon P, int numCaught, PokeNode lChild,  PokeNode rChild)`
+ * Pokemon should be a non-null object.
+ * numCaught should be >= 1.
+ * lChild and rChild are PokeNodes. They may or not be null depending on your implementation.
+
+#### Get methods
+`public Pokemon getPokemon( )`
+ * This method will return a Pokemon object from inside a given node
+ 
+`public int getKey( )`
+ * This method will return the number of the Pokemon object contained in a given node. This is the key for the BST.
+ 
+`public int getNumCaught( )`
+ * This method will return the numCaught from inside a given node
+  
+`public PokeNode getLChild( )`
+ * This method will return the left child of a given node
+
+`public PokeNode getRChild( )`
+ * This method will return the right child of a given node
+
+#### Set methods
+`public void increaseNumCaught( )`
+ * This method will increment the numCaught from inside a given node
+ 
+ `public void decreaseNumCaught( )`
+ * This method will decrement numCaught from inside a given node
+ * Should throw an exception if it becomes < 1
+ 
+`public void setLChild( PokeNode newLChild)`
+ * This method will set newLNode as the left child of a node
+
+`public void setRChild( PokeNode newRChild)`
+ * This method will set newRNode as the right child of a node
+
+**Note:** There is no setPokemon method. We don't want anybody to change the Pokemon in a node that is already part of the 
+binary search tree, this will make it inconsistent. 
+
+---
+
+### PokeTree.java
+
+####Constructor:
+`public PokeTree( )`
+ * Empty BST constructor.
+
+####Adding Pokemon: 
+`public void add( Pokemon p )`
+ * This method should call the private recursive add method with root
+ 
+`private PokeNode add(PokeNode node, Pokemon p )`
+ * Recursive add method
+ * Should make a new node and put Pokemon p in it with numCaught = 1 if not already in the tree
+ * Should increment numCaught if Pokemon already is in the tree
+ 
+####Removing Pokemon:
+**Hint: Do this part last, it is hardest because you have to reorder the tree**
+
+`public void remove( Pokemon p)`
+ * Wrapper method that calls recursive remove method with root
+ 
+`private Pokenode remove(PokeNode node,  Pokemon p)`
+ * decrements numCaught
+ * Removes Pokemon p from the tree if numCaught == 0
+ * Throws exception if p not in the tree
+ 
+####Getting Pokemon in Tree by number:
+`public Pokemon get(Pokemon searchKey){`
+ * Public wrapper method that calles recursive method with root
+ 
+`private Pokemon get(PokeNode node, Pokemon searchKey){`
+ * Private recursive get method
+ * Returns Pokemon object with number == searchKey.getNumber()
+ * Should throw an exception if Pokemon with number == searchKey.getNumber() not in the tree
+ 
+#### BST Print method:
+`public void printBSTree()`
+ * Overloaded wrapper method in order to access private data field `root` to send to recursive method.
+ 
+```java	
+private void printPokeTree(PokeNode root){
+      if(root != null){
+       System.out.println("  " + root.getPokemon( ).toString() + "\nCaught: "+root.getNumCaught( ) );
+           printPokeTree(root.getLChild());
+           printPokeTree(root.getRChild());
+      }
+}
+```
+* This recursive method takes the root as a parameter and will print tree in **preorder traversal**. 
+* It is good for debugging purposes.
+* You may copy and paste this method into your PokeTree class.
+
+---
+
+##Extra Credit
+1. Add more Pokemon families. 10 points per family - see: [Species Stats](https://thesilphroad.com/research) 
+2. Add ASCII art images to your Pokemon classes and print them with the Pokedex. These can be stored as long Strings in your objects. examples: [Pokemon ASCII art](http://www.ascii-code.com/ascii-art/video-games/pokemon.php) (variable points)
+3. Rather than keeping the art directly in your Pokemon objects, make a HashMap with the Pokemon species as the key and the ASCII art string as the value. Store this as part of the PokeTree (hard coded to build when constructor is called) and access during printing. (variable points)
+
+----
+
+Learning Outcomes:
+
+For this assignment, you will practice/learn:
+* Creating and using binary search trees.
+* Use binary tree traversals.
+* Practice your skills in creating and communicating several classes.
+
+---
+If you have any questions please e-mail Lisa:  ljmiller@hawaii.edu
